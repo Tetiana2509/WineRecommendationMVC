@@ -1,0 +1,168 @@
+﻿@model List<WineRecommendationMVC.Models.WinePrediction> 
+
+@{
+    Layout = null;
+}
+
+<style>
+    body {
+        margin: 0;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #f2e0c9;
+    }
+    header {
+        background-color: #ddb892;
+        padding: 20px;
+        text-align: center;
+        font-size: 1.8em;
+        font-weight: bold;
+    }
+    .layout {
+        display: flex;
+        min-height: calc(100vh - 80px);
+    }
+    .sidebar {
+        background-color: #e6c8a5;
+        width: 200px;
+        padding: 20px 10px;
+    }
+    .sidebar button {
+        display: block;
+        width: 100%;
+        margin-bottom: 10px;
+        padding: 10px;
+        background-color: #f9d9ae;
+        border: 1px solid #c59f73;
+        border-radius: 4px;
+        font-size: 1em;
+        cursor: pointer;
+    }
+    .sidebar button:hover {
+        background-color: #f7c67b;
+    }
+    .content {
+        flex: 1;
+        background-color: #f9dbb7;
+        padding: 30px;
+    }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        background-color: white;
+        box-shadow: 0 0 5px rgba(0,0,0,0.1);
+    }
+    th, td {
+        padding: 10px;
+        border: 1px solid #ccc;
+        text-align: left;
+    }
+    th {
+        background-color: #f0e0d6;
+    }
+    .comment-button {
+        background-color: #28a745;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        padding: 5px 10px;
+        cursor: pointer;
+    }
+    .comment-button:hover {
+        background-color: #1e7e34;
+    }
+    .sort-buttons {
+        margin-bottom: 20px;
+    }
+    .sort-buttons form {
+        display: inline-block;
+        margin-right: 10px;
+    }
+    .sort-buttons button {
+        padding: 8px 14px;
+        font-size: 1em;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    .sort-buttons button:hover {
+        background-color: #0056b3;
+    }
+</style>
+
+<header>
+    Wine quality prediction
+</header>
+
+<div class="layout">
+    <div class="sidebar">
+        <form method="get" asp-controller="RedWine" asp-action="Index">
+            <button type="submit">Recommendation for red wine</button>
+        </form>
+        <form method="get" asp-controller="WhiteWine" asp-action="Index">
+            <button type="submit">Recommendation for white wine</button>
+        </form>
+        <form method="get" asp-controller="Compare" asp-action="Form">
+            <button type="submit">Compare two wines</button>
+        </form>
+        <form method="get" asp-controller="History" asp-action="Index">
+            <button type="submit">History</button>
+        </form>
+    </div>
+
+    <div class="content">
+        <h2>Recommendation History</h2>
+        <div class="sort-buttons">
+            <form method="get" asp-controller="History" asp-action="Index">
+                <input type="hidden" name="sortBy" value="quality" />
+                <button type="submit">Sort by Quality</button>
+            </form>
+            <form method="get" asp-controller="History" asp-action="Index">
+                <input type="hidden" name="sortBy" value="alcohol" />
+                <button type="submit">Sort by Alcohol</button>
+            </form>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Wine Type</th>
+                    <th>Quality</th>
+                    <th>Recommendation</th>
+                    <th>Alcohol</th>
+                    <th>pH</th>
+                    <th>Density</th>
+                    <th>Comment</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                        <tr>
+                            <td>@item.WineType</td>
+                            <td>@item.PredictedQuality</td>
+                            <td>@item.Recommendation</td>
+                            <td>@item.WineSample?.Alcohol</td>
+                            <td>@item.WineSample?.PH</td>
+                            <td>@item.WineSample?.Density</td>
+                            <td>
+                            @if (item.WineNote != null)
+                            {
+                                        <span>@item.WineNote.Comment</span>
+                            }
+                            else
+                            {
+                                        <span style="color: gray;">(немає)</span>
+                            }
+                            </td>
+                            <td>
+                                <button class="comment-button" onclick="openCommentModal(@item.Id)">Додати коментар</button>
+                            </td>
+                        </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

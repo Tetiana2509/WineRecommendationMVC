@@ -1,0 +1,129 @@
+﻿@model List<WineRecommendationMVC.Models.WinePrediction>
+@{
+    Layout = null;
+    ViewData["Title"] = "Порівняння вина";
+}
+
+<style>
+    body {
+        margin: 0;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #f2e0c9;
+    }
+    header {
+        background-color: #ddb892;
+        padding: 20px;
+        text-align: center;
+        font-size: 1.8em;
+        font-weight: bold;
+    }
+    .layout {
+        display: flex;
+        height: calc(100vh - 80px);
+    }
+    .sidebar {
+        background-color: #e6c8a5;
+        width: 200px;
+        padding: 20px 10px;
+    }
+    .sidebar button {
+        display: block;
+        width: 100%;
+        margin-bottom: 10px;
+        padding: 10px;
+        background-color: #f9d9ae;
+        border: 1px solid #c59f73;
+        border-radius: 4px;
+        font-size: 1em;
+        cursor: pointer;
+    }
+    .sidebar button:hover {
+        background-color: #f7c67b;
+    }
+    .content {
+        flex: 1;
+        background-color: #f9dbb7;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 40px;
+    }
+    .form-card {
+        background-color: white;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        max-width: 600px;
+        width: 100%;
+        text-align: center;
+    }
+    select, label, button {
+        display: block;
+        width: 100%;
+        margin-bottom: 20px;
+        font-size: 1em;
+    }
+    select {
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+    button.compare-btn {
+        background-color: #007bff;
+        color: white;
+        border: none;
+        padding: 12px;
+        font-size: 1.1em;
+        border-radius: 6px;
+        cursor: pointer;
+    }
+    button.compare-btn:hover {
+        background-color: #0056b3;
+    }
+</style>
+
+<header>
+    Wine quality prediction
+</header>
+
+<div class="layout">
+    <div class="sidebar">
+        <form method="get" asp-controller="RedWine" asp-action="Index">
+            <button type="submit">Recommendation for red wine</button>
+        </form>
+        <form method="get" asp-controller="WhiteWine" asp-action="Index">
+            <button type="submit">Recommendation for white wine</button>
+        </form>
+        <form method="get" asp-controller="Compare" asp-action="Form">
+            <button type="submit">Compare two wines</button>
+        </form>
+        <form method="get" asp-controller="History" asp-action="Index">
+            <button type="submit">History</button>
+        </form>
+    </div>
+
+    <div class="content">
+        <div class="form-card">
+            <h2>Оберіть два вина для порівняння</h2>
+            <form asp-action="Result" method="post">
+                <label for="wine1">Вино 1:</label>
+                <select name="wine1" required>
+                    @foreach (var w in Model)
+                    {
+                            <option value="@w.Id">[@w.Id] @w.WineType - @w.PredictedQuality.ToString("0.##")</option>
+                    }
+                </select>
+
+                <label for="wine2">Вино 2:</label>
+                <select name="wine2" required>
+                    @foreach (var w in Model)
+                    {
+                            <option value="@w.Id">[@w.Id] @w.WineType - @w.PredictedQuality.ToString("0.##")</option>
+                    }
+                </select>
+
+                <button type="submit" class="compare-btn">Порівняти</button>
+            </form>
+        </div>
+    </div>
+</div>

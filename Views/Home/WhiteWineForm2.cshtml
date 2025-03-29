@@ -1,0 +1,150 @@
+﻿@model MLModel.ModelInput
+@{
+    Layout = null;
+}
+
+<style>
+    body {
+        margin: 0;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #f2e0c9;
+    }
+    header {
+        background-color: #ddb892;
+        padding: 20px;
+        text-align: center;
+        font-size: 1.8em;
+        font-weight: bold;
+    }
+    .layout {
+        display: flex;
+        height: calc(100vh - 80px);
+    }
+    .sidebar {
+        background-color: #e6c8a5;
+        width: 200px;
+        padding: 20px 10px;
+    }
+    .sidebar button {
+        display: block;
+        width: 100%;
+        margin-bottom: 10px;
+        padding: 10px;
+        background-color: #f9d9ae;
+        border: 1px solid #c59f73;
+        border-radius: 4px;
+        font-size: 1em;
+        cursor: pointer;
+    }
+    .sidebar button:hover {
+        background-color: #f7c67b;
+    }
+    .content {
+        flex: 1;
+        background-color: #f9dbb7;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 40px;
+    }
+    .form-container {
+        background: white;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        width: 100%;
+        max-width: 500px;
+    }
+    .form-container h3 {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+    .form-container label {
+        display: block;
+        margin-top: 10px;
+        font-weight: bold;
+    }
+    .form-container input {
+        width: 100%;
+        padding: 8px;
+        margin-top: 5px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+    .form-container button {
+        margin-top: 20px;
+        width: 100%;
+        padding: 10px;
+        background-color: #007bff;
+        color: white;
+        font-size: 1em;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    .form-container button:hover {
+        background-color: #0056b3;
+    }
+</style>
+
+<header>
+    Wine quality prediction
+</header>
+
+<div class="layout">
+    <div class="sidebar">
+        <form method="get" asp-controller="RedWine" asp-action="Index">
+            <button type="submit">Recommendation for red wine</button>
+        </form>
+        <form method="get" asp-controller="WhiteWine" asp-action="Index">
+            <button type="submit">Recommendation for white wine</button>
+        </form>
+        <form method="get" asp-controller="Compare" asp-action="Form">
+            <button type="submit">Compare two wines</button>
+        </form>
+        <form method="get" asp-controller="History" asp-action="Index">
+            <button type="submit">History</button>
+        </form>
+    </div>
+
+    <div class="content">
+        <form asp-controller="WhiteWine" asp-action="Recommend" method="post" class="form-container">
+            <h3>Enter white wine characteristics</h3>
+
+            <label for="Fixed_acidity">Fixed Acidity:</label>
+            <input asp-for="Fixed_acidity" required />
+
+            <label for="Volatile_acidity">Volatile Acidity:</label>
+            <input asp-for="Volatile_acidity" required />
+
+            <label for="Citric_acid">Citric Acid:</label>
+            <input asp-for="Citric_acid" required />
+
+            <label for="Residual_sugar">Residual Sugar:</label>
+            <input asp-for="Residual_sugar" required />
+
+            <label for="Chlorides">Chlorides:</label>
+            <input asp-for="Chlorides" required />
+
+            <label for="Free_sulfur_dioxide">Free Sulfur Dioxide:</label>
+            <input asp-for="Free_sulfur_dioxide" required />
+
+            <label for="Total_sulfur_dioxide">Total Sulfur Dioxide:</label>
+            <input asp-for="Total_sulfur_dioxide" required />
+
+            <label for="Density">Density:</label>
+            <input asp-for="Density" required />
+
+            <label for="PH">pH:</label>
+            <input asp-for="PH" required />
+
+            <label for="Sulphates">Sulphates:</label>
+            <input asp-for="Sulphates" required />
+
+            <label for="Alcohol">Alcohol:</label>
+            <input asp-for="Alcohol" required />
+
+            <button type="submit">Predict Quality</button>           
+        </form>
+    </div>
+</div>

@@ -1,0 +1,93 @@
+﻿@model WineRecommendationMVC.Models.WinePrediction
+@{
+    Layout = null;
+}
+<style>
+    body {
+        margin: 0;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #f2e0c9;
+    }
+    header {
+        background-color: #ddb892;
+        padding: 20px;
+        text-align: center;
+        font-size: 1.8em;
+        font-weight: bold;
+    }
+    .layout {
+        display: flex;
+        height: calc(100vh - 80px);
+    }
+    .sidebar {
+        background-color: #e6c8a5;
+        width: 200px;
+        padding: 20px 10px;
+    }
+    .sidebar button {
+        display: block;
+        width: 100%;
+        margin-bottom: 10px;
+        padding: 10px;
+        background-color: #f9d9ae;
+        border: 1px solid #c59f73;
+        border-radius: 4px;
+        font-size: 1em;
+        cursor: pointer;
+    }
+    .sidebar button:hover {
+        background-color: #f7c67b;
+    }
+    .content {
+        flex: 1;
+        background-color: #f9dbb7;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 40px;
+    }
+    .result-card {
+        background-color: white;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        max-width: 600px;
+        text-align: center;
+    }
+    .result-card h2 {
+        margin-bottom: 20px;
+    }
+    .result-card p {
+        font-size: 1.2em;
+        margin: 10px 0;
+    }
+</style>
+
+<header>
+    Wine quality prediction
+</header>
+
+<div class="layout">
+    <div class="sidebar">
+        <form method="get" asp-controller="RedWine" asp-action="Index">
+            <button type="submit">Recommendation for red wine</button>
+        </form>
+        <form method="get" asp-controller="WhiteWine" asp-action="Index">
+            <button type="submit">Recommendation for white wine</button>
+        </form>
+        <form method="get" asp-controller="Compare" asp-action="Form">
+            <button type="submit">Compare two wines</button>
+        </form>
+        <form method="get" asp-controller="History" asp-action="Index">
+            <button type="submit">History</button>
+        </form>
+    </div>
+    <div class="content">
+        <div class="result-card">
+            <h2>Результат передбачення якості вина</h2>
+            <p><strong>Тип вина:</strong> @Model.WineType</p>
+            <p><strong>Якість:</strong> @Model.PredictedQuality.ToString("0.##")</p>
+            <p><strong>Рекомендація:</strong> @Model.Recommendation</p>
+        </div>
+    </div>
+</div>

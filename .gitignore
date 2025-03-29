@@ -1,0 +1,54 @@
+## === Visual Studio === ##
+.vs/
+*.user
+*.suo
+
+## === Build results === ##
+bin/
+obj/
+[Bb]uild/
+[Ll]og/
+
+## === NuGet === ##
+*.nupkg
+*.snupkg
+*.nuspec
+*.psmdcp
+packages/
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+## === ASP.NET === ##
+*.db
+*.db-shm
+*.db-wal
+*.pdb
+*.log
+
+## === Configs/Secrets === ##
+appsettings.*.json
+secrets.json
+
+## === ML.NET Auto-generated === ##
+*.zip
+*.mbconfig
+*.mlnet
+*.txt
+*.tmp
+*.model
+
+## === User-specific files === ##
+*.user
+*.userosscache
+*.sln.docstates
+
+## === OS files === ##
+.DS_Store
+Thumbs.db
+
+## === Logs === ##
+*.log
+
+## === Publish === ##
+publish/

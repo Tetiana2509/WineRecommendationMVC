@@ -1,0 +1,144 @@
+﻿@model (WineRecommendationMVC.Models.WinePrediction, WineRecommendationMVC.Models.WinePrediction)
+
+@{
+    Layout = null;
+    if (Model.Item1 == null || Model.Item2 == null)
+    {
+                <div style="color:red; font-weight:bold; margin: 30px;">
+                    Помилка: Не передано одне з вин для порівняння.
+                </div>
+        return;
+    }
+
+    var w1 = Model.Item1;
+    var w2 = Model.Item2;
+
+    Func<float, float, string> highlight = (v1, v2) => v1 > v2 ? "highlight" : (v1 < v2 ? "" : "equal");
+}
+
+<style>
+    body {
+        margin: 0;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #f2e0c9;
+    }
+    header {
+        background-color: #ddb892;
+        padding: 20px;
+        text-align: center;
+        font-size: 1.8em;
+        font-weight: bold;
+    }
+    .layout {
+        display: flex;
+        height: calc(100vh - 80px);
+    }
+    .sidebar {
+        background-color: #e6c8a5;
+        width: 200px;
+        padding: 20px 10px;
+    }
+    .sidebar button {
+        display: block;
+        width: 100%;
+        margin-bottom: 10px;
+        padding: 10px;
+        background-color: #f9d9ae;
+        border: 1px solid #c59f73;
+        border-radius: 4px;
+        font-size: 1em;
+        cursor: pointer;
+    }
+    .sidebar button:hover {
+        background-color: #f7c67b;
+    }
+    .content {
+        flex: 1;
+        background-color: #f9dbb7;
+        padding: 40px;
+        display: flex;
+        justify-content: center;
+    }
+    .compare-box {
+        background-color: white;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        width: 100%;
+        max-width: 800px;
+    }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
+    th, td {
+        border: 1px solid #ccc;
+        padding: 10px;
+        text-align: center;
+    }
+    th {
+        background-color: #f2f2f2;
+    }
+    .highlight {
+        background-color: #d4edda;
+        font-weight: bold;
+    }
+    .equal {
+        background-color: #fff3cd;
+    }
+
+</style>
+
+<header>
+    Wine quality prediction
+</header>
+
+<div class="layout">
+    <div class="sidebar">
+        <form method="get" asp-controller="RedWine" asp-action="Index">
+            <button type="submit">Recommendation for red wine</button>
+        </form>
+        <form method="get" asp-controller="WhiteWine" asp-action="Index">
+            <button type="submit">Recommendation for white wine</button>
+        </form>
+        <form method="get" asp-controller="Compare" asp-action="Form">
+            <button type="submit">Compare two wines</button>
+        </form>
+        <form method="get" asp-controller="History" asp-action="Index">
+            <button type="submit">History</button>
+        </form>
+    </div>
+
+    <div class="content">
+        <div class="compare-box">
+            <h2>Порівняння вина №@w1.Id та №@w2.Id</h2>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Параметр</th>
+                        <th>Вино 1</th>
+                        <th>Вино 2</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>Тип</td><td>@w1.WineType</td><td>@w2.WineType</td></tr>
+                    <tr><td>Якість</td><td class="@highlight(w1.PredictedQuality, w2.PredictedQuality)">@w1.PredictedQuality.ToString("0.##")</td><td class="@highlight(w2.PredictedQuality, w1.PredictedQuality)">@w2.PredictedQuality.ToString("0.##")</td></tr>
+                    <tr><td>Алкоголь</td><td class="@highlight(w1.WineSample.Alcohol, w2.WineSample.Alcohol)">@w1.WineSample.Alcohol</td><td class="@highlight(w2.WineSample.Alcohol, w1.WineSample.Alcohol)">@w2.WineSample.Alcohol</td></tr>
+                    <tr><td>PH</td><td class="@highlight(w1.WineSample.PH, w2.WineSample.PH)">@w1.WineSample.PH</td><td class="@highlight(w2.WineSample.PH, w1.WineSample.PH)">@w2.WineSample.PH</td></tr>
+                    <tr><td>Щільність</td><td class="@highlight(w1.WineSample.Density, w2.WineSample.Density)">@w1.WineSample.Density</td><td class="@highlight(w2.WineSample.Density, w1.WineSample.Density)">@w2.WineSample.Density</td></tr>
+                    <tr><td>Коментар</td><td>@(w1.WineNote?.Comment ?? "(немає)")</td><td>@(w2.WineNote?.Comment ?? "(немає)")</td></tr>
+                </tbody>
+            </table>
+            <div style="margin-top: 30px;">
+                <h4>Пояснення:</h4>
+                <ul>
+                    <li><span style="background-color:#d4edda; padding: 2px 6px;">Зелений</span> — значення краще, ніж у другого вина</li>
+                    <li><span style="background-color:#fff3cd; padding: 2px 6px;">Жовтий</span> — значення однакове</li>
+                    <li>Без підсвітки — значення гірше, ніж у другого вина</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
